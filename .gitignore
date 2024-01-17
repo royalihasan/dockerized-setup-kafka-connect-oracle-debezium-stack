@@ -1,0 +1,142 @@
+# Created by https://www.gitignore.io/api/springboot
+
+### Spring Boot ###
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Bytecode
+*.jar
+*.war
+*.ear
+*.hprof
+
+# Test directory
+test-output/
+
+# Package Files #
+*.war
+*.ear
+*.jar
+
+# Maven
+target/
+mvnw
+mvnw.cmd
+.mvn/wrapper/
+!/.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+build/
+.gradle/
+
+# Logs
+logs/
+*.log
+
+# IntelliJ
+.idea/
+*.iml
+*.iws
+*.iwb
+
+# Eclipse
+.classpath
+.project
+.settings/
+*.launch
+
+# Visual Studio Code
+.vscode/
+
+# STS (Spring Tool Suite)
+.springBeans
+
+# Jboss
+*.tmp
+*.log
+
+# Tomcat
+work/
+conf/Catalina/
+logs/
+temp/
+*.properties
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+# Thumbnails
+._*
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code directories
+.vscode/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# JetBrains
+.idea/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+*.userprefs
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code directories
+.vscode/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
