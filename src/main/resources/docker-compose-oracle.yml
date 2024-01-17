@@ -6,10 +6,8 @@ services:
     container_name: oracle-db
     ports:
       - "1521:1521"
-      - "5500:5500"
     environment:
-      - ORACLE_PDB=XEPDB1
-      - ORACLE_PWD=<your-password>
+      - ORACLE_PWD=top_secret
     networks:
       - oracle-net
 
