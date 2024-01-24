@@ -22,9 +22,9 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 100
 
   schema-registry:
@@ -40,7 +40,7 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
 
   kafka-connect:
-    image: confluentinc/cp-kafka-connect-base:latest
+    image: confluentinc/cp-kafka-connect-base:5.5.0
     container_name: kafka-connect
     depends_on:
       - zookeeper
@@ -103,7 +103,7 @@ services:
 
   # Other systems
   oracle:
-    image: container-registry.oracle.com/database/enterprise:latest
+    image: container-registry.oracle.com/database/enterprise:latest # 21C
     container_name: oracle
     environment:
       - ORACLE_PWD=Admin123
