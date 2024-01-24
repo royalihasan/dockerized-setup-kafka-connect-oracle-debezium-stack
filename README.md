@@ -1,6 +1,6 @@
 # Kafka Connect with Oracle Database Using Debezium
 
-# Oracle Database Express Edition Docker Image
+# Oracle Database Enterprise Edition Docker Image
 
 This guide will walk you through the process of pulling the Oracle Database Express Edition Docker image from the Oracle
 Container Registry.
@@ -24,7 +24,7 @@ from [https://www.docker.com/get-started](https://www.docker.com/get-started).
 
    Run the following command
    ```bash
-   docker pull container-registry.oracle.com/database/express:latest
+   docker pull container-registry.oracle.com/database/enterprise:latest
    ```
 
 3. **Check Kafka Connect:**
