@@ -102,32 +102,31 @@ sqlplus c##xstrmadmin/xsa@//localhost:1521/ORCLCDB <<- EOF
 	exit;
 EOF
 
-# sqlplus c##xstrmadmin/xsa@//localhost:1521/ORCLCDB <<- EOF
+ sqlplus c##xstrmadmin/xsa@//localhost:1521/ORCLCDB <<- EOF
 
-# 	DECLARE
-# 	  tables  DBMS_UTILITY.UNCL_ARRAY;
-# 	  schemas DBMS_UTILITY.UNCL_ARRAY;
-# 	BEGIN
-# 	    tables(1)  := NULL;
-# 	    schemas(1) := 'debezium';
-# 	  DBMS_XSTREAM_ADM.CREATE_OUTBOUND(
-# 	    server_name     =>  'dbzxout',
-# 	    table_names     =>  tables,
-# 	    schema_names    =>  schemas);
-# 	END;
-# 	/
+ 	DECLARE
+ 	  tables  DBMS_UTILITY.UNCL_ARRAY;
+ 	  schemas DBMS_UTILITY.UNCL_ARRAY;
+ 	BEGIN
+ 	    tables(1)  := NULL;
+ 	    schemas(1) := 'debezium';
+ 	  DBMS_XSTREAM_ADM.CREATE_OUTBOUND(
+ 	    server_name     =>  'dbzxout',
+ 	    table_names     =>  tables,
+ 	    schema_names    =>  schemas);
+ 	END;
+ 	/
 
-# 	exit;
-# EOF
+ 	exit;
+ EOF
 
-# sqlplus sys/Admin123@//localhost:1521/ORCLCDB as sysdba <<- EOF
-#   BEGIN
-#     DBMS_XSTREAM_ADM.ALTER_OUTBOUND(
-#       server_name  => 'dbzxout',
-#       connect_user => 'c##xstrm');
-#   END;
-#   /
+ sqlplus sys/Admin123@//localhost:1521/ORCLCDB as sysdba <<- EOF
+   BEGIN
+     DBMS_XSTREAM_ADM.ALTER_OUTBOUND(
+       server_name  => 'dbzxout',
+       connect_user => 'c##xstrm');
+   END;
+   /
 
-#   exit;
-# EOF
-
+   exit;
+ EOF
