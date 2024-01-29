@@ -138,6 +138,7 @@ Hurrah all Configration all Complete
 
 _By using this Payload_
 
+Avro Based Connector
 ```json
 {
   "name": "oracle-customer-source-connector-00",
@@ -162,6 +163,33 @@ _By using this Payload_
     "key.converter.schema.registry.url": "http://schema-registry:8081",
     "value.converter.schema.registry.url": "http://schema-registry:8081"
   }
+}
+```
+Json Based Connector
+```json
+{
+    "name": "oracle-customer-source-connector-01",
+    "config": {
+        "connector.class": "io.debezium.connector.oracle.OracleConnector",
+        "database.hostname": "oracle",
+        "database.port": "1521",
+        "database.user": "c##dbzuser",
+        "database.password": "dbz",
+        "database.server.name": "test1",
+        "database.history.kafka.topic": "history_1",
+        "database.dbname": "ORCLCDB",
+        "database.connection.adapter": "LogMiner",
+        "database.history.kafka.bootstrap.servers": "kafka:9092",
+        "table.include.list": "DEBEZIUM.CUSTOMERS",
+        "database.schema": "DEBEZIUM",
+        "database.pdb.name": "ORCLPDB1",
+        "snapshot.mode": "schema_only",
+        "include.schema.changes": "true",
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "key.converter.schema.registry.url": "http://schema-registry:8081",
+        "value.converter.schema.registry.url": "http://schema-registry:8081"
+    }
 }
 ```
 
