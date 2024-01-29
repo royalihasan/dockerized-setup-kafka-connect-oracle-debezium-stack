@@ -100,7 +100,7 @@ curl https://repo1.maven.org/maven2/com/oracle/database/xml/xdb/21.6.0.0/xdb-21.
 **Step2: Setup the Instant Client Tool**
 > Instant Client is used to Connect to Talk with Oracle db and XStream Api
 
-`Change the Directory to : cd kafka/external_libs`
+`Change the Directory to : cd /kafka/external_libs`
 
 _Now pull the Instant Client by doing Curl_
 
@@ -111,7 +111,7 @@ unzip instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip
 
 **Step3: Setup the Debizium JDBC Sink Plugins for Postgres**
 
-`Change the Directory to : cd connectors`
+`Change the Directory to : cd connect`
 
 _Now pull the Plugins by doing Curl_
 > Note: This is a tar file you can use tar `xvfz <file_name>` to extract it.
@@ -227,9 +227,8 @@ WHERE id = 1041;
 `DELETE: `
 
 ```oracle
-UPDATE CUSTOMERS
-SET email = 'new_email@gmail.com'
-WHERE id = 1041;
+DELETE FROM CUSTOMERS
+WHERE id = 1024;
 ```
 
 _Now check the changes in the terminal where we are listening ou TOPIC_
