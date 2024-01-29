@@ -184,11 +184,15 @@ source | oracle-customer-source-connector-00 | RUNNING | RUNNING | io.debezium.c
 **Step2: Listen the Topic and Read Message messages**
 
 `Access You Terminal and paste this command`
-
+_For Avro Based Tailing_
 ```shell
 docker run --tty --network resources_default confluentinc/cp-kafkacat kafkacat -b kafka:9092 -C -s key=s -s value=avro -r http:/schema-registry:8081 -t test.DEBEZIUM.CUSTOMERS
 ```
+_For Json Based Tailing_
+```shell
+docker run --tty --network resources_default confluentinc/cp-kafkacat kafkacat -b kafka:9092 -C -f "%S: %s\n"  -t test1.DEBEZIUM.CUSTOMERS
 
+```
 > _Note: resources_default is the network , you can replace with you network name_
 
 ---
