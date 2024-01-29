@@ -1,0 +1,25 @@
+###
+#Create a Brand New Source Connectoer
+POST http://localhost:8083/connectors/
+Accept: application/json
+Content-Type: application/json
+
+< create-customer-source-connector.json
+
+###
+#--------------------------------------------------
+###
+#creat a Postgrest Sink
+POST http://localhost:8083/connectors/
+Accept: application/json
+Content-Type: application/json
+
+< create-postgres-sink-connector.json
+
+###
+#---------------------------------------------------
+###
+# Delete Any connector
+DELETE http://localhost:8083/connectors/{connector-name}
+
+###

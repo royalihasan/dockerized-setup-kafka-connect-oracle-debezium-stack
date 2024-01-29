@@ -1,0 +1,20 @@
+{
+  "name": "jdbc-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.jdbc.JdbcSinkConnector",
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "tasks.max": "1",
+    "connection.url": "jdbc:postgresql://postgres:5432/",
+    "connection.username": "postgres",
+    "connection.password": "postgres",
+    "insert.mode": "upsert",
+    "delete.enabled": "true",
+    "auto.create":"true",
+    "primary.key.mode": "record_key",
+    "schema.evolution": "basic",
+    "database.time_zone": "UTC",
+    "topics": "test1.DEBEZIUM.CUSTOMERS",
+    "table.name.format": "customers"
+  }
+}
