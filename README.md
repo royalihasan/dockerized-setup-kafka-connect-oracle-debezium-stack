@@ -17,6 +17,8 @@ The second branch focuses on upgraded features, incorporating the latest version
 inclusion of the Kowl UI. In this branch, Oracle is not implicitly installed; instead, only the addition of the OJBC
 driver is required. The setup includes multiple tables, and the payload details the specific configurations for
 seamless integration.
+
+
 ---
 ## 1. Steps to Pull Oracle Database Enterprise(_21C_) Image
 
