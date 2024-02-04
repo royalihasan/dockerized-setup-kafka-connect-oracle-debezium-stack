@@ -116,8 +116,6 @@ Hurrah, all Configurations Complete
 
 _By using this Payload_
 
-Avro Based Connector
-
 ```json
 {
   "name": "generic-inventory-connector",
