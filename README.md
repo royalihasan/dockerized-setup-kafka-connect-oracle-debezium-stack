@@ -1,5 +1,23 @@
 # Kafka Connect with Oracle Database Using Debezium
 
+> Note:
+
+## Repository Branches Overview
+
+### 1. Demo Record Branch
+
+The first branch in the Oracle-KI repository is dedicated to the demonstration record. Within this branch, the Debezium
+connector version 1.9 has been utilized. Notably, the integration involves implicit Oracle plugging and encompasses
+various additional functionalities. The payload associated with this branch provides a comprehensive overview of the
+implemented features.
+
+### 2. Upgraded Features Branch
+
+The second branch focuses on upgraded features, incorporating the latest version of the Debezium connector and the
+inclusion of the Kowl UI. In this branch, Oracle is not implicitly installed; instead, only the addition of the OJBC
+driver is required. The setup includes multiple tables, and the payload details the specific configurations for
+seamless integration.
+---
 ## 1. Steps to Pull Oracle Database Enterprise(_21C_) Image
 
 1. **Login to Oracle Container Registry:**
@@ -54,6 +72,7 @@ Please check output for further info!
 
 Run following script from Oracle docker container
 https://raw.githubusercontent.com/royalihasan/dockerized-setup-kafka-connect-oracle-debezium-stack/master/src/main/resources/01_db_setup_scripts/01_logminer-setup.sh
+
 ```
 curl https://raw.githubusercontent.com/royalihasan/dockerized-setup-kafka-connect-oracle-debezium-stack/master/src/main/resources/01_db_setup_scripts/01_logminer-setup.sh | sh
 ```
@@ -61,6 +80,7 @@ curl https://raw.githubusercontent.com/royalihasan/dockerized-setup-kafka-connec
 **Step3: Create Sample database**
 
 https://raw.githubusercontent.com/royalihasan/dockerized-setup-kafka-connect-oracle-debezium-stack/master/src/main/resources/01_db_setup_scripts/inventory.sql
+
 ```bash
 curl https://raw.githubusercontent.com/royalihasan/dockerized-setup-kafka-connect-oracle-debezium-stack/master/src/main/resources/01_db_setup_scripts/inventory.sql | sqlplus debezium/dbz@//localhost:1521/orclpdb1
 ```
@@ -227,7 +247,8 @@ WHERE id = 1041;
 `DELETE: `
 
 ```oracle
-DELETE FROM CUSTOMERS
+DELETE
+FROM CUSTOMERS
 WHERE id = 1024;
 ```
 
@@ -288,9 +309,12 @@ sink   | jdbc-postgres-sink-connector        | RUNNING | RUNNING | io.debezium.c
 ```shell
 psql -U postgres
 ```
+
 `2. Check the Tables in DB by using \td`
+
 ```sql
-SELECT * FROM customers;
+SELECT *
+FROM customers;
 ```
 
 > There will be a same Data which was in Oracle Db
