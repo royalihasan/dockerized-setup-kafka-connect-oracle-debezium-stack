@@ -110,6 +110,7 @@ unzip instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip
 ```
 
 **Step3: Setup the Debizium JDBC Sink Plugins for Postgres**
+> Note: If you are using `LATEST` version of Debezium There is no need to install JDBC driver implicitly
 
 `Change the Directory to : cd connect`
 
@@ -124,7 +125,7 @@ tar xvfz  debezium-connector-jdbc-2.5.0.Final-plugin.tar.gz
 **Step4:Now Restart the Debizium Connector**
 > _Note: Use Docker to Restart the connector Service_
 
-Hurrah all Configration all Complete
+Hurrah, all Configration all Complete
 
 ---
 
@@ -148,7 +149,7 @@ Avro Based Connector
     "database.port": "1521",
     "database.user": "c##dbzuser",
     "database.password": "dbz",
-    "database.server.name": "test",
+    "database.server.name": "oracle",
     "database.history.kafka.topic": "history",
     "database.dbname": "ORCLCDB",
     "database.connection.adapter": "LogMiner",
@@ -175,7 +176,7 @@ Json Based Connector
         "database.port": "1521",
         "database.user": "c##dbzuser",
         "database.password": "dbz",
-        "database.server.name": "test1",
+        "database.server.name": "oracle",
         "database.history.kafka.topic": "history_1",
         "database.dbname": "ORCLCDB",
         "database.connection.adapter": "LogMiner",
@@ -277,24 +278,24 @@ _Now check the changes in the terminal where we are listening ou TOPIC_
 
 ```json
 {
-  "name": "jdbc-postgres-sink-connector",
-  "config": {
-    "connector.class": "io.debezium.connector.jdbc.JdbcSinkConnector",
-    "key.converter": "io.confluent.connect.avro.AvroConverter",
-    "key.converter.schema.registry.url": "http://schema-registry:8081",
-    "tasks.max": "1",
-    "connection.url": "jdbc:postgresql://postgres:5432/",
-    "connection.username": "postgres",
-    "connection.password": "postgres",
-    "insert.mode": "upsert",
-    "delete.enabled": "true",
-    "auto.create": "true",
-    "primary.key.mode": "record_key",
-    "schema.evolution": "basic",
-    "database.time_zone": "UTC",
-    "topics": "test.DEBEZIUM.CUSTOMERS",
-    "table.name.format": "customers"
-  }
+   "name": "jdbc-postgres-sink-connector",
+   "config": {
+      "connector.class": "io.debezium.connector.jdbc.JdbcSinkConnector",
+      "key.converter": "io.confluent.connect.avro.AvroConverter",
+      "key.converter.schema.registry.url": "http://schema-registry:8081",
+      "tasks.max": "1",
+      "connection.url": "jdbc:postgresql://postgres:5432/",
+      "connection.username": "postgres",
+      "connection.password": "postgres",
+      "insert.mode": "upsert",
+      "delete.enabled": "true",
+      "auto.create": "true",
+      "primary.key.mode": "record_key",
+      "schema.evolution": "basic",
+      "database.time_zone": "UTC",
+      "topics": "oracle.DEBEZIUM.CUSTOMERS",
+      "table.name.format": "customers"
+   }
 }
 ```
 

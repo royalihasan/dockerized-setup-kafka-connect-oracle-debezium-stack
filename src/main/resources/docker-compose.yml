@@ -36,7 +36,7 @@ services:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
   debezium:
-    image: debezium/connect:1.9
+    image: debezium/connect:latest
     container_name: connect
     environment:
       BOOTSTRAP_SERVERS: kafka:9092
@@ -48,14 +48,38 @@ services:
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
       CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
       CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
-      VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      #      KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+      #      VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
       CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
       LD_LIBRARY_PATH: '/kafka/external_libs/instantclient_19_6/'
     depends_on: [ kafka , zookeeper,schema-registry ]
     ports:
       - 8083:8083
+
+
+  ui:
+    container_name: ui
+    image: debezium/debezium-ui
+    ports:
+      - "9090:8080"
+    environment:
+      KAFKA_CONNECT_URIS: http://debezium:8083/
+    depends_on:
+      - debezium
+  kowl:
+    image: quay.io/cloudhut/kowl
+    restart: on-failure
+
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_BROKERS=kafka:9092  # Replace with your Kafka broker host
+      - KAFKA_OBSERVER_POLL_INTERVAL=5s  # Adjust as needed
+      - KAFKA_CONNECT_REST_URL:http://debezium:8083
+      # Add other environment variables as per your requirements
+    depends_on:
+      - debezium
   # Source DB's
   oracle:
     image: container-registry.oracle.com/database/enterprise:latest # 21C
@@ -81,6 +105,4 @@ services:
       - 5432:5432
 
 
-
-
-  # Other Systems
+# Other Systems
