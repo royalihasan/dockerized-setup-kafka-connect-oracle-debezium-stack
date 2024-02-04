@@ -54,6 +54,7 @@ Please check output for further info!
 
 Run following script from Oracle docker container
 https://raw.githubusercontent.com/royalihasan/dockerized-setup-kafka-connect-oracle-debezium-stack/master/src/main/resources/01_db_setup_scripts/01_logminer-setup.sh
+
 ```
 curl https://raw.githubusercontent.com/royalihasan/dockerized-setup-kafka-connect-oracle-debezium-stack/master/src/main/resources/01_db_setup_scripts/01_logminer-setup.sh | sh
 ```
@@ -61,6 +62,7 @@ curl https://raw.githubusercontent.com/royalihasan/dockerized-setup-kafka-connec
 **Step3: Create Sample database**
 
 https://raw.githubusercontent.com/royalihasan/dockerized-setup-kafka-connect-oracle-debezium-stack/master/src/main/resources/01_db_setup_scripts/inventory.sql
+
 ```bash
 curl https://raw.githubusercontent.com/royalihasan/dockerized-setup-kafka-connect-oracle-debezium-stack/master/src/main/resources/01_db_setup_scripts/inventory.sql | sqlplus debezium/dbz@//localhost:1521/orclpdb1
 ```
@@ -93,43 +95,18 @@ FROM CUSTOMERS;
 
 ```bash
 curl https://maven.xwiki.org/externals/com/oracle/jdbc/ojdbc8/12.2.0.1/ojdbc8-12.2.0.1.jar -o ojdbc8-12.2.0.1.jar
-curl https://repo1.maven.org/maven2/com/thoughtworks/xstream/xstream/1.3.1/xstream-1.3.1.jar -o xstream-1.3.1.jar
-curl https://repo1.maven.org/maven2/com/oracle/database/xml/xdb/21.6.0.0/xdb-21.6.0.0.jar -o xdb-21.6.0.0.jar
 ```
 
-**Step2: Setup the Instant Client Tool**
-> Instant Client is used to Connect to Talk with Oracle db and XStream Api
-
-`Change the Directory to : cd /kafka/external_libs`
-
-_Now pull the Instant Client by doing Curl_
-
-```bash
-curl "https://download.oracle.com/otn_software/linux/instantclient/19600/instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip" -O /tmp/ic.zip
-unzip instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip
-```
-
-**Step3: Setup the Debizium JDBC Sink Plugins for Postgres**
-> Note: If you are using `LATEST` version of Debezium There is no need to install JDBC driver implicitly
-
-`Change the Directory to : cd connect`
-
-_Now pull the Plugins by doing Curl_
-> Note: This is a tar file you can use tar `xvfz <file_name>` to extract it.
-
-```shell
-curl https://repo1.maven.org/maven2/io/debezium/debezium-connector-jdbc/2.5.0.Final/debezium-connector-jdbc-2.5.0.Final-plugin.tar.gz -O /tmp/ic.zip
-tar xvfz  debezium-connector-jdbc-2.5.0.Final-plugin.tar.gz
-```
-
-**Step4:Now Restart the Debizium Connector**
+**Step3:Now Restart the Debizium Connector**
 > _Note: Use Docker to Restart the connector Service_
 
-Hurrah, all Configration all Complete
+Hurrah, all Configurations Complete
 
 ---
 
 ## 3. Create Connector for Testing
+
+> Note There are Multiple tables in `tables` dir
 
 > Create a Oracle Source Connector
 
@@ -140,58 +117,25 @@ Hurrah, all Configration all Complete
 _By using this Payload_
 
 Avro Based Connector
+
 ```json
 {
-  "name": "oracle-customer-source-connector-00",
+  "name": "generic-inventory-connector",
   "config": {
     "connector.class": "io.debezium.connector.oracle.OracleConnector",
     "database.hostname": "oracle",
     "database.port": "1521",
     "database.user": "c##dbzuser",
     "database.password": "dbz",
-    "database.server.name": "oracle",
-    "database.history.kafka.topic": "history",
     "database.dbname": "ORCLCDB",
-    "database.connection.adapter": "LogMiner",
-    "database.history.kafka.bootstrap.servers": "kafka:9092",
-    "table.include.list": "DEBEZIUM.CUSTOMERS",
-    "database.schema": "DEBEZIUM",
+    "topic.prefix": "oracle",
+    "tasks.max": "1",
     "database.pdb.name": "ORCLPDB1",
-    "snapshot.mode": "schema_only",
-    "include.schema.changes": "true",
-    "key.converter": "io.confluent.connect.avro.AvroConverter",
-    "value.converter": "io.confluent.connect.avro.AvroConverter",
-    "key.converter.schema.registry.url": "http://schema-registry:8081",
-    "value.converter.schema.registry.url": "http://schema-registry:8081"
+    "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
+    "schema.history.internal.kafka.topic": "schema-changes.inventory"
   }
 }
-```
-Json Based Connector
-```json
-{
-    "name": "oracle-customer-source-connector-01",
-    "config": {
-        "connector.class": "io.debezium.connector.oracle.OracleConnector",
-        "database.hostname": "oracle",
-        "database.port": "1521",
-        "database.user": "c##dbzuser",
-        "database.password": "dbz",
-        "database.server.name": "oracle",
-        "database.history.kafka.topic": "history_1",
-        "database.dbname": "ORCLCDB",
-        "database.connection.adapter": "LogMiner",
-        "database.history.kafka.bootstrap.servers": "kafka:9092",
-        "table.include.list": "DEBEZIUM.CUSTOMERS",
-        "database.schema": "DEBEZIUM",
-        "database.pdb.name": "ORCLPDB1",
-        "snapshot.mode": "schema_only",
-        "include.schema.changes": "true",
-        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
-        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-        "key.converter.schema.registry.url": "http://schema-registry:8081",
-        "value.converter.schema.registry.url": "http://schema-registry:8081"
-    }
-}
+
 ```
 
 > Now check the Connector is Working Fine
@@ -207,21 +151,25 @@ column -s : -t| sed 's/\"//g'| sort
 `The Output Should be like this `
 
 ```text
-source | oracle-customer-source-connector-00 | RUNNING | RUNNING | io.debezium.connector.oracle.OracleConnector
+source | generic-inventory-connector | RUNNING | RUNNING | io.debezium.connector.oracle.OracleConnector
 ```
 
 **Step2: Listen the Topic and Read Message messages**
 
 `Access You Terminal and paste this command`
 _For Avro Based Tailing_
+
 ```shell
 docker run --tty --network resources_default confluentinc/cp-kafkacat kafkacat -b kafka:9092 -C -s key=s -s value=avro -r http:/schema-registry:8081 -t test.DEBEZIUM.CUSTOMERS
 ```
+
 _For Json Based Tailing_
+
 ```shell
 docker run --tty --network resources_default confluentinc/cp-kafkacat kafkacat -b kafka:9092 -C -f "%S: %s\n"  -t test1.DEBEZIUM.CUSTOMERS
 
 ```
+
 > _Note: resources_default is the network , you can replace with you network name_
 
 ---
@@ -260,7 +208,8 @@ WHERE id = 1041;
 `DELETE: `
 
 ```oracle
-DELETE FROM CUSTOMERS
+DELETE
+FROM CUSTOMERS
 WHERE id = 1024;
 ```
 
@@ -275,27 +224,24 @@ _Now check the changes in the terminal where we are listening ou TOPIC_
 **Step1: Create a Sink request using this payload**
 
 `POST on this URL : http://localhost:8083/connectors`
+> Note: include `topics` according to you specs
 
 ```json
 {
-   "name": "jdbc-postgres-sink-connector",
-   "config": {
-      "connector.class": "io.debezium.connector.jdbc.JdbcSinkConnector",
-      "key.converter": "io.confluent.connect.avro.AvroConverter",
-      "key.converter.schema.registry.url": "http://schema-registry:8081",
-      "tasks.max": "1",
-      "connection.url": "jdbc:postgresql://postgres:5432/",
-      "connection.username": "postgres",
-      "connection.password": "postgres",
-      "insert.mode": "upsert",
-      "delete.enabled": "true",
-      "auto.create": "true",
-      "primary.key.mode": "record_key",
-      "schema.evolution": "basic",
-      "database.time_zone": "UTC",
-      "topics": "oracle.DEBEZIUM.CUSTOMERS",
-      "table.name.format": "customers"
-   }
+  "name": "jdbc-sink-connector-generic",
+  "config": {
+    "connector.class": "io.debezium.connector.jdbc.JdbcSinkConnector",
+    "tasks.max": "1",
+    "connection.url": "jdbc:postgresql://postgres:5432/",
+    "connection.username": "postgres",
+    "connection.password": "postgres",
+    "insert.mode": "upsert",
+    "delete.enabled": "true",
+    "primary.key.mode": "record_key",
+    "schema.evolution": "basic",
+    "database.time_zone": "UTC",
+    "topics": "oracle.DEBEZIUM.PRODUCT_CATEGORIES, oracle.DEBEZIUM.PRODUCT_CATEGORY_MAPPING, oracle.DEBEZIUM.PRODUCT_REVIEWS, oracle.DEBEZIUM.PRODUCTS, oracle.DEBEZIUM.PRODUCTS_ON_HAND, oracle.DEBEZIUM.SHIPMENTS, oracle.DEBEZIUM.SUPPLIERS"
+  }
 }
 ```
 
@@ -310,8 +256,8 @@ column -s : -t| sed 's/\"//g'| sort
 `The Output Should be like this `
 
 ```text
-source | oracle-customer-source-connector-00 | RUNNING | RUNNING | io.debezium.connector.oracle.OracleConnector
-sink   | jdbc-postgres-sink-connector        | RUNNING | RUNNING | io.debezium.connector.oracle.OracleConnector
+source | generic-inventory-connector | RUNNING | RUNNING | io.debezium.connector.oracle.OracleConnector
+sink   | jdbc-sink-connector-generic | RUNNING | RUNNING | io.debezium.connector.oracle.OracleConnector
 ```
 
 > Now check the Changes in Postgres DB
@@ -321,9 +267,12 @@ sink   | jdbc-postgres-sink-connector        | RUNNING | RUNNING | io.debezium.c
 ```shell
 psql -U postgres
 ```
+
 `2. Check the Tables in DB by using \td`
+
 ```sql
-SELECT * FROM customers;
+SELECT *
+FROM < table_name >;
 ```
 
 > There will be a same Data which was in Oracle Db
